@@ -64,7 +64,7 @@ void add_fractions(struct Fractions n, struct Fractions d)
 	    tot_den=d.den1*d.den2;
 	    num=(n.num1*d.den2)+(n.num2*d.den1);
 	    printf("\nThe sum of the 2 unlike fractions is: %d/%d",num,tot_den);
-	    simplified_form(tot_num,lcm);
+	    simplified_form(num,tot_den);
     }
 	
   }
