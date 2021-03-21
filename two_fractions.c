@@ -1,121 +1,130 @@
 //WAP to find the sum of two fractions.
 #include<stdio.h>
-int lcm_of_2_nos(int n1, int n2);
-void simplified_form(int tot_num, int denominator);
-struct Fractions
+int lcm_func(int n1, int n2);
+typedef struct Fractions
 {
-	int num1;
-  int num2;
-  int den1;
-  int den2;
-};
+	int num;
+	int den;
+}Fractions;
+Fractions input_fraction1()
+{
+	struct Fractions f1;
+	printf("Enter the numerator and denominator fraction 1:");
+	scanf("%d%d",&f1.num,&f1.den);
+	return f1;
+}
+Fractions input_fraction2()
+{
+    struct Fractions f2;
+    printf("Enter the numerator and denominator of fraction 2: ");
+    scanf("%d%d",&f2.num,&f2.den);
+    return f2;
+}
 int main()
 {
-	struct Fractions numerator, denominator;
-  void add_fractions(struct Fractions numerator, struct Fractions denominator);
-	printf("Enter the numerator and denominator of fraction 1 (proper fractions): ");
-	scanf("%d%d",&numerator.num1,&denominator.den1);
-	printf("Enter the numerator and denominator of fraction 2 (proper fractions): ");
-	scanf("%d%d",&numerator.num2,&denominator.den2);
-	printf("\nThe fractions to be added are: %d/%d and %d/%d",numerator.num1,denominator.den1,numerator.num2,denominator.den2);
-	add_fractions(numerator,denominator);
-  return 0;
+	struct Fractions frac1,frac2;
+    	struct Fractions res,final_frac;
+    	//void add(Fractions fraction1,Fractions fraction2);
+	frac1=input_fraction1();
+	frac2=input_fraction2();
+	printf("The fraction 1 is: %d/%d",frac1.num,frac1.den);
+	printf("The fraction 2 is: %d/%d",frac2.num,frac2.den);
+	struct Fractions add(Fractions fraction1,Fractions fraction2);
+            res=add(frac1,frac2);
+    	//printf("The sum of 2 fractions is:%d/%d",res.num,res.den);
+            void display(Fractions frac1, Fractions frac2, Fractions result);
+    	display(frac1,frac2,res);
+	return 0;
 }
-void add_fractions(struct Fractions n, struct Fractions d)
+Fractions add(Fractions fraction1,Fractions fraction2)
 {
-
-	if(d.den1==d.den2)
-	{
-	  int tot=0,den_like;
-  	printf("\nThe 2 fractions are like fractions that are %d/%d and %d/%d",n.num1,d.den1,n.num2,d.den2);
-	  tot=n.num1+n.num2;
-	  printf("\nThe sum of the 2 like fractions is: %d/%d",tot,d.den1);
-	  den_like=d.den1;
-	  simplified_form(tot,den_like);
-  }
-  else
-  {
-	  int lcm;
-    printf("\nThe 2 fractions are unlike fractions that are %d/%d and %d/%d",n.num1,d.den1,n.num2,d.den2);
-    int lcm_func(struct Fractions d);
-    lcm=lcm_func(d);
-    if(d.den2%d.den1==0)
+    struct Fractions result,a;
+    int l,gcd;
+    if(fraction1.den==fraction2.den) //like fractions
     {
-	      int q,tot_num;
-	      if(d.den1>d.den2)
-        {
-		        q=d.den1/d.den2;
-		        tot_num=(n.num2*q)+n.num1;
-		        printf("\nThe sum of the 2 unlike fractions is: %d/%d",tot_num,lcm);
-		        simplified_form(tot_num,lcm);
-        }
-        else
-        {
-	          q=d.den2/d.den1;
-		        tot_num=(n.num1*q)+n.num2;
-	          printf("\nThe sum of the 2 unlike fractions is: %d/%d",tot_num,lcm);
-		        simplified_form(tot_num,lcm);
-
-        }
+        int n,d;
+        n=(fraction1.num+fraction2.num);
+        d=(fraction1.den);
+        printf("\nThe sum of 2 fractions are: %d/%d",n,d);
+        l=lcm_func(n,d);
+        gcd=(n*d)/l;
+        a.num=n;
+        a.den=d;
+        Fractions result={(a.num/gcd),(a.den/gcd)};
+        return result;
+    }    
+    else  //unlike fractions
+    {
+        if(fraction2.den%fraction1.den==0 || fraction1.den%fraction2.den==0)  
+//if denominator 1 is the multiple of denominator 2 or vice versa
+       {
+           		int q,tot_num,tot_den;
+           		if(fraction1.den>fraction2.den)
+           		{
+               		q=(fraction1.den/fraction2.den);
+               		tot_num=(fraction2.num*q)+fraction1.num; 
+               		tot_den=fraction1.den;
+               		printf("The sum of the 2 fractions is: %d/%d",tot_num,tot_den);
+               		l=lcm_func(tot_num,tot_den);
+               		a.num=tot_num;
+               		a.den=tot_den;
+               		gcd=(a.num*a.den)/l;
+               		Fractions final={(a.num/gcd),(a.den/gcd)};
+               		return final;
+           		}
+           		else
+           		{
+               		q=(fraction2.den/fraction1.den);
+               		tot_num=(fraction1.num*q)+fraction2.num;
+               		tot_den=fraction2.den;
+               		printf("The sum of the 2 fractions is: %d/%d",tot_num,tot_den);
+               		l=lcm_func(tot_num,tot_den);
+               		a.num=tot_num;
+               		a.den=tot_den;
+               		gcd=(a.num*a.den)/l;
+               		Fractions final={(a.num/gcd),(a.den/gcd)};
+               		return final;
+           		}
+           
+       	}
+       	else  //when one denominator is NOT a multiple of the other
+       	{
+           		int tot_den,num;
+          		 tot_den=fraction1.den*fraction2.den;
+           		num=(fraction1.num*fraction2.den)+(fraction2.num*fraction1.den);
+           		printf("The sum of the 2 fractions is: %d/%d",num,tot_den);
+           		a.num=num;
+           		a.den=tot_den;
+           		l=lcm_func(num,tot_den);
+           		gcd=(a.num*a.den)/l;
+           		Fractions final={(a.num/gcd),(a.den/gcd)};
+           		return final;
+       	}
+    }
+}
+int lcm_func(int n1, int n2)
+{
+    int lcm;
+    if(n1>n2)
+    {
+        lcm=n1;
     }
     else
     {
-	    int tot_den,num;
-	    tot_den=d.den1*d.den2;
-	    num=(n.num1*d.den2)+(n.num2*d.den1);
-	    printf("\nThe sum of the 2 unlike fractions is: %d/%d",num,tot_den);
-	    simplified_form(num,tot_den);
+        lcm=n2;
     }
-	
-  }
-}
-int lcm_func(struct Fractions d)
-{
-	
-	int lcm;
-	if(d.den1>d.den2)
-  {
-		lcm=d.den1;
-  }
-  else
-  {
-	  lcm=d.den2;
-  }
-  while(d.den1!=0 && d.den2!=0)
-  {
-	    if(lcm%d.den1==0 && lcm%d.den2==0)
-	    {
-		    return lcm;
-      }
-      lcm++;
-  }
-}
-void simplified_form(int tot_num, int denominator)
-{
-	int q1,q2,l,gcd;
-	l=lcm_of_2_nos(tot_num,denominator);
-	gcd=(tot_num*denominator)/l;
-	q1=tot_num/gcd;
-	q2=denominator/gcd;
-	printf("\nThe simplified form is: %d/%d",q1,q2);
-}
-int lcm_of_2_nos(int n1, int n2)
-{
-	int lcm;
-	if(n1>n2)
-  {
-		lcm=n1; 
-  }
-  else
-  {
-	  lcm=n2;
-  }
-  while(n1!=0 && n2!=0) 
-  {
-	  if(lcm%n1==0 && lcm%n2==0)
-	  {
-		  return lcm;
+    while(n1!=0 && n2!=0)
+    {
+        if(lcm%n1==0 && lcm%n2==0)
+        {
+            return lcm;
+        }
+        lcm++;
     }
-    lcm++;
-  }
+}
+void display(Fractions frac1,Fractions frac2,Fractions result)
+{
+    
+    printf("\nThe simplified form of %d/%d and %d/%d is: %d/%d",frac1.num,frac1.den,frac2.num,frac2.den,result.num,result.den);
+    
 }
